@@ -1,0 +1,133 @@
+---
+title: Re-Analysis of '1727 VHA Concierge Care'
+author: Jake Bowers
+date: "`r format(Sys.time(), '%a %b %d %X %Y')`"
+output:
+  html_document:
+    code_folding: hide
+    toc: true
+    fig_caption: true
+    css: oes.css
+  pdf_document:
+    fig_caption: true
+    fig_height: 7
+    fig_width: 7
+    keep_tex: yes
+    latex_engine: xelatex
+    md_extensions: +autolink_bare_uris+tex_math_dollars
+    number_sections: yes
+    template: oesreport.latex
+---
+
+<!-- Much of the intro text from the Project Summary in the Team Drive -->
+
+```{r setup, results='hide', message=FALSE, warning=FALSE}
+# Clear environment, set working directory, load packages & data
+rm(list = ls())
+source("setup.R")
+```
+
+# Agency Objective
+The objective of this project is to test whether providing transitioning service members (TSMs) with additional information about VA health care benefits via three emails sent 60 and 30 days pre-separation and 30 days post-separation will increase their enrollment in VA health care benefits.
+
+
+# Background
+
+
+# Design
+
+The design is blocked by month with each veteran assigned to receive an email using formal language, an email using informal language, and no email (the control group). Assignment was in equal numbers within month.
+
+The primary outcome is number of enrollments, especially within 30 days.
+
+And the team pre-registered a subgroup analysis of Combat Veterans as well.
+
+# Overview of results
+
+Fill in here after the bottom part is done so people do not have to wade through a lot of code.
+
+# Data
+
+
+```{r, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
+datAll<-read_excel("../Data/PRESEP_COUNT AS OF 20171011.xlsx",range="A4:H26")
+dat30<-read_excel("../Data/PRESEP_COUNT AS OF 20171011.xlsx",range="A30:H42")
+dat60<-read_excel("../Data/PRESEP_COUNT AS OF 20171011.xlsx",range="A47:H60")
+dat90<-read_excel("../Data/PRESEP_COUNT AS OF 20171011.xlsx",range="A64:H77")
+```
+
+# Data Setup
+
+```{r}
+## Total number of emails sent in each condition in each month
+tots <- datAll[-nrow(datAll),-ncol(datAll)] %>% filter(ENROLLED=="ALL")
+enrolled30 <- dat30[,-ncol(dat30)] %>% filter(ENROLLED=="ALL")
+themonths <- grep("2017",names(datAll),value=TRUE)
+
+tabarr30 <- array(dim=c(3,2,4),
+                  dimnames=list(treatment=c("Formal","Familiar","Ctrl"),
+                                outcome=c("Enrolled","Not Enrolled"),
+                                strata=themonths
+                                )
+                  )
+
+for(i in themonths){
+tabarr30[,,i] <- cbind(enrolled30[[i]],tots[[i]] - enrolled30[[i]])
+}
+
+class(tabarr30) <- "table"
+## Test the hypothesis of independence of treatments in a stratified experiment assuming no three-way interaction
+
+## First test that assumption
+woolf_test(tabarr30)
+## And describe the odds ratios
+
+## Then test the hypothesis of no relationship
+cmh30 <- mantelhaen.test(tabarr30)
+cmh30a <- cmh_test(object=tabarr30,distribution=approximate(B=10000))
+cmh30
+cmh30a
+```
+
+
+```{r}
+
+## see also 
+##library(reshape)
+##expanded<-untable(df[,c(1,2)], num=df[,3])
+## or library(splitstackshape)
+## expandRows(df, "freq")
+
+dat30exp<-as.data.frame(tabarr30)
+bigdat30list<-lapply(dat30exp,function(x){rep(x,dat30exp$Freq) })
+bigdat30 <- as.data.frame(bigdat30list)
+bigdat30$Freq <- NULL
+cmh_test(outcome~treatment|strata,data=bigdat30)
+
+## Describe the relationships a bit more
+
+or30<-loddsratio(tabarr30,ref=c("Ctrl","Not Enrolled"))
+confint(or30)
+
+mcp30<-glht(or30)
+
+```
+
+# Design variables
+
+## More design considerations:
+
+## Analysis strategy:
+
+## Outcomes
+
+# Analysis
+
+
+## Test of the null of no effects
+
+## Estimation of the average treatment effect
+
+# Analysis to Report {#analysisreport}
+
+# References
