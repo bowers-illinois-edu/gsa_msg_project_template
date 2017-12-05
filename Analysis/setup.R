@@ -44,3 +44,19 @@ opts_chunk$set(strip.white=TRUE,
                comment=NA)
 
 options(digits=4,scipen=10)
+
+## Enable the use of Lato in graphics assuming it has been installed on the system
+library(extrafont)
+font_import(pattern="Lato")
+loadfonts()
+
+## OES colors
+## yellow:  R=242 G=196 B=70 F2C446
+## orange:  R=249 G=131 B=74 F9834A
+## blue:  R=46 G=154 B=196   2E9AC4
+## red:  R=250 G=86 B=70 FA5646
+## green:  R=3 G=202 B=185 03CAB9
+## grey:  R=153 G=153 B=153 999999
+oesPalette <- c("#2E9AC4", "#F9834A", "#03CAB9", "#FA5646", "#F2C446", "#999999", "#000000")
+names(oesPalette)<-c("blue","orange","green","red","yellow","grey","black")
+
