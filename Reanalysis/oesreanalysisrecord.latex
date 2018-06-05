@@ -1,6 +1,6 @@
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
+\usepackage[usenames,dvipsnames]{xcolor}
 
-\usepackage{xcolor}
 \definecolor{darkyellow}{rgb}{102,83,30}
 \definecolor{orange}{HTML}{F9834A}
 \definecolor{yellow}{HTML}{F2C446}
@@ -8,10 +8,14 @@
 \definecolor{darkblue}{rgb}{19,64,80}
 \definecolor{green}{HTML}{03CAB9}
 \definecolor{grey}{HTML}{999999}
+\definecolor{darkgrey}{RGB}{102,102,102}
 \definecolor{red}{HTML}{FA5646}
 
 \usepackage[T1]{fontenc}
+%\usepackage{lmodern}
+\usepackage{tgtermes}
 \usepackage{amssymb,amsmath}
+%\usepackage[margin=1in]{geometry}
 \usepackage[letterpaper,bottom=1in,top=1in,right=1in,left=1in,includemp=FALSE]{geometry}
 \usepackage{pdfpages}
 \usepackage[small]{caption}
@@ -20,14 +24,11 @@
 \usepackage{fixltx2e} % provides \textsubscript
 % use microtype if available
 \IfFileExists{microtype.sty}{\usepackage{microtype}}{}
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
 \usepackage[utf8]{inputenc}
+%\usepackage{eurosym}
 \usepackage{fontspec}
-\usepackage{xltxtra,xunicode}
 \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
-
 %\newcommand{\euro}{€}
-
 \setmainfont{Lato}[
 Path = ../Fonts/,
 Extension= .ttf,
@@ -46,19 +47,24 @@ $endif$
 $if(mathfont)$
 \setmathfont{$mathfont$}
 $endif$
-\fi
-%$if(geometry)$
-%\usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
-%$endif$
 
+$if(natbib)$
+\usepackage{natbib}
+\bibliographystyle{apsr}
+$endif$
 
 $if(biblatex)$
-\usepackage[style=$biblio-style$]{biblatex}
+\usepackage{biblatex}
 $if(biblio-files)$
 \bibliography{$biblio-files$}
 $endif$
 $endif$
-
+$if(listings)$
+\usepackage{listings}
+$endif$
+$if(lhs)$
+\lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small\ttfamily}}{}
+$endif$
 $if(highlighting-macros)$
 $highlighting-macros$
 $endif$
@@ -94,24 +100,23 @@ $endif$
 %% \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=\maxwidth]{#1}}
 \graphicspath{{.}}
 
-
 \ifxetex
-\usepackage[setpagesize=false, % page size defined by xetex
-unicode=false, % unicode breaks when used with xetex
-xetex]{hyperref}
+\usepackage[xetex]{hyperref}
+%\usepackage[pagebackref=true, setpagesize=false, % page size defined by xetex
+%unicode=false, % unicode breaks when used with xetex
+%xetex]{hyperref}
 \else
-\usepackage[unicode=true, bookmarks=true, pdftex]{hyperref}
+\usepackage[pagebackref=true, unicode=true, bookmarks=true, pdftex]{hyperref}
 \fi
-
 
 \hypersetup{breaklinks=true,
   bookmarks=true,
   pdfauthor={$author-meta$},
   pdftitle={$title-meta$},
   colorlinks=true,
-  %linkcolor=grey,
+  linkcolor=BrickRed,
   citecolor=blue, %MidnightBlue,
-  urlcolor=grey,
+  urlcolor=BrickRed,
   % urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
   % linkcolor=$if(linkcolor)$$linkcolor$$else$magenta$endif$,
   pdfborder={0 0 0}}
@@ -144,37 +149,61 @@ $if(lang)$
 \usepackage[$lang$]{babel}
 \fi
 $endif$
+
 $for(header-includes)$
 $header-includes$
 $endfor$
 
-
-%%% Change title format to be more compact
-\usepackage{titling}
-
-% Create subtitle command for use in maketitle
-\newcommand{\subtitle}[1]{
-  \posttitle{
-    \begin{flushright}\color{blue}\Large#1\end{flushright}
-    }
+% https://stackoverflow.com/questions/16626462/figure-position-in-markdown-when-converting-to-pdf-with-knitr-and-pandoc/33801326#33801326
+\usepackage{float}
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+\renewenvironment{figure}[1][2]{
+    \expandafter\origfigure\expandafter[H]
+}{
+    \endorigfigure
 }
 
-\setlength{\droptitle}{-2em}
-$if(title)$
-  \title{$title$}
-  \pretitle{\vspace{\droptitle}\flushright\color{green}\huge}
-  \posttitle{\par}
-$else$
-  \title{}
-  \pretitle{\vspace{\droptitle}}
-  \posttitle{}
-$endif$
-$if(subtitle)$
-\subtitle{$subtitle$}
-$endif$
+\usepackage[export]{adjustbox}
+
+\usepackage{fancyhdr}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\rfoot{\footnotesize{\color{darkgrey}{\thepage}}}
+\rhead{\includegraphics[width=.8cm,valign=c]{OES.png} \includegraphics[width=.8cm,valign=c]{GSA.png}}
+%\cfoot{\color{grey}{ \footnotesize{\number\year | \href{http://oes.gsa.gov}{http://oes.gsa.gov} } }}
+\cfoot{\color{darkgrey}{ \footnotesize{ \href{http://oes.gsa.gov}{http://oes.gsa.gov} } }}
+\pagestyle{fancy}
 
 
-\author{%
+\makeatletter
+\def\@maketitle{%
+  \newpage
+  \null
+  \vskip 2em%
+  %\begin{center}%
+  \let \footnote \thanks
+  {\begin{minipage}{.8\linewidth}
+    \LARGE \color{red}{\textbf{Record of Reanalysis}} \par 
+    \large \color{darkgrey}{\@title} \par %
+    \noindent\rule{.8\textwidth}{0.5pt}
+  \end{minipage} \hfill
+  %\begin{minipage}{t}{.2\linewidth}
+  \includegraphics[height=2.5cm, valign=c]{Reanalysis.png}\par
+  }
+  %\end{minipage}
+    \vskip 1em%
+    %{\large \@date}%
+  %\end{center}%
+  \par
+  \vskip 1.5em}
+\makeatother
+
+\title{Project title: $projecttitle$ \\
+Project code: $projectcode$}
+
+\author{
 $for(author)$
 $if(author.name)$
 $author.name$$if(author.affiliation)$\thanks{$author.affiliation$}$endif$ \quad
@@ -201,18 +230,23 @@ $endfor$
 
 \usepackage[compact,bottomtitles]{titlesec}
 %\titleformat{ ⟨command⟩}[⟨shape⟩]{⟨format⟩}{⟨label⟩}{⟨sep⟩}{⟨before⟩}[⟨after⟩]
-\titleformat{\section}[hang]{\Large\bfseries}{\thesection}{.5em}{\hspace{0in}}[\vspace{-.2\baselineskip}]
+\titleformat{\section}[hang]{\large\bfseries\color{red}}{\thesection}{.5em}{\hspace{0in}}[\vspace{-.2\baselineskip}]
 \titleformat{\subsection}[hang]{\large\bfseries}{\thesubsection}{.5em}{\hspace{0in}}[\vspace{-.2\baselineskip}]
 %\titleformat{\subsubsection}[hang]{\bfseries}{\thesubsubsection}{.5em}{\hspace{0in}}[\vspace{-.2\baselineskip}]
-\titleformat{\subsubsection}[runin]{\bfseries\color{red}}{\thesubsubsection}{1ex}{}[\vspace{-.2\baselineskip}]
-\titleformat{\paragraph}[runin]{\bfseries\color{red}}{\theparagraph}{1ex}{}{\vspace{-.2\baselineskip}}
+\titleformat{\subsubsection}[runin]{\bfseries}{\thesubsubsection}{1ex}{}[\vspace{-.2\baselineskip}]
+\titleformat{\paragraph}[runin]{\bfseries\itshape}{\theparagraph}{1ex}{}{\vspace{-.2\baselineskip}}
 %\titleformat{\paragraph}[runin]{\itshape}{\theparagraph}{1ex}{}{\vspace{-.2\baselineskip}}
 
+%%\titleformat{\subsection}[hang]{\bfseries}{\thesubsection}{.5em}{\hspace{0in}}[\vspace{-.2\baselineskip}]
+%%%\titleformat*{\subsection}{\bfseries\scshape}
+%%%\titleformat{\subsubsection}[leftmargin]{\footnotesize\filleft}{\thesubsubsection}{.5em}{}{}
+%%\titleformat{\subsubsection}[hang]{\small\bfseries}{\thesubsubsection}{.5em}{\hspace{0in}}[\vspace{-.2\baselineskip}]
+%%\titleformat{\paragraph}[runin]{\itshape}{\theparagraph}{1ex}{}{\vspace{-.5\baselineskip}}
 
 %\titlespacing*{ ⟨command⟩}{⟨left⟩}{⟨beforesep⟩}{⟨aftersep⟩}[⟨right⟩]
-\titlespacing{\section}{0pc}{1.5ex plus 0.1ex minus 0.2ex}{.5ex plus 0.1ex minus 0.1ex}
-\titlespacing{\subsection}{0pc}{1.5ex plus 0.1ex minus 0.2ex}{.5ex plus 0.1ex minus 0.1ex}
-\titlespacing{\subsubsection}{0pc}{1.5ex plus 0.1ex minus 0.2ex}{.5ex plus 0.1ex minus 0.1ex}
+\titlespacing{\section}{0pc}{1.5ex plus .1ex minus .2ex}{.5ex plus .1ex minus .1ex}
+\titlespacing{\subsection}{0pc}{1.5ex plus .1ex minus .2ex}{.5ex plus .1ex minus .1ex}
+\titlespacing{\subsubsection}{0pc}{1.5ex plus .1ex minus .2ex}{.5ex plus .1ex minus .1ex}
 
 
 
@@ -230,31 +264,9 @@ $endfor$
 \setlength{\floatsep}{2ex}
 \setlength{\textfloatsep}{2ex}
 
-% https://stackoverflow.com/questions/16626462/figure-position-in-markdown-when-converting-to-pdf-with-knitr-and-pandoc/33801326#33801326
-\usepackage{float}
-\let\origfigure\figure
-\let\endorigfigure\endfigure
-\renewenvironment{figure}[1][2]{
-    \expandafter\origfigure\expandafter[H]
-}{
-    \endorigfigure
-}
-
-
-\usepackage[export]{adjustbox}
-\usepackage{fancyhdr}
-\fancyhead{}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-\cfoot{\footnotesize{\color{grey}{\thepage}}}
-\lfoot{\includegraphics[width=.8cm,valign=c]{OES.png} \includegraphics[width=.8cm,valign=c]{GSA.png}}
-\rfoot{\color{grey}{ \footnotesize{\number\year | \href{http://oes.gsa.gov}{http://oes.gsa.gov} } }}
-\pagestyle{fancy}
-
 
 \begin{document}
 \VerbatimFootnotes
-
 \maketitle
 \thispagestyle{fancy}
 
@@ -270,22 +282,21 @@ $if(toc)$
 $endif$
 $body$
 
-%% No list of references desired for the Abstract
-%%$if(natbib)$
-%%$if(biblio-files)$
-%%$if(biblio-title)$
-%%$if(book-class)$
-%%\renewcommand\bibname{$biblio-title$}
-%%$else$
-%%\renewcommand\refname{$biblio-title$}
-%%$endif$
-%%$endif$
-%%%\bibliography{$biblio-files$}
-%%$endif$
-%%$endif$
-%%$if(biblatex)$
-%%\printbibliography$if(biblio-title)$[title=$biblio-title$]
-%%$endif$
+$if(natbib)$
+$if(biblio-files)$
+$if(biblio-title)$
+$if(book-class)$
+\renewcommand\bibname{$biblio-title$}
+$else$
+\renewcommand\refname{$biblio-title$}
+$endif$
+$endif$
+%\bibliography{$biblio-files$}
+
+$endif$
+$endif$
+$if(biblatex)$
+\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
 
 $endif$
 $for(include-after)$
