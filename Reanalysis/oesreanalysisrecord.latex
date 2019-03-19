@@ -238,7 +238,7 @@ $endfor$
 
 \usepackage[compact,bottomtitles]{titlesec}
 %\titleformat{ ⟨command⟩}[⟨shape⟩]{⟨format⟩}{⟨label⟩}{⟨sep⟩}{⟨before⟩}[⟨after⟩]
-\titleformat{\section}[hang]{\large\bfseries\color{red}}{\thesection}{.5em}{\hspace{0in}}[\vspace{-.2\baselineskip}]
+\titleformat{\section}[hang]{\Large\bfseries\color{red}}{\thesection}{.5em}{\hspace{0in}}[\vspace{-.2\baselineskip}]
 \titleformat{\subsection}[hang]{\large\bfseries}{\thesubsection}{.5em}{\hspace{0in}}[\vspace{-.2\baselineskip}]
 %\titleformat{\subsubsection}[hang]{\bfseries}{\thesubsubsection}{.5em}{\hspace{0in}}[\vspace{-.2\baselineskip}]
 \titleformat{\subsubsection}[runin]{\bfseries}{\thesubsubsection}{1ex}{}[\vspace{-.2\baselineskip}]
