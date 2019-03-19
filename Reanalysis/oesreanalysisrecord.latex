@@ -1,4 +1,6 @@
 \documentclass[11pt]{article}
+%% I was getting errors when tabu was not included
+\usepackage{tabu}
 \usepackage[usenames,dvipsnames]{xcolor}
 
 \definecolor{darkyellow}{rgb}{102,83,30}
@@ -16,7 +18,8 @@
 \usepackage{tgtermes}
 \usepackage{amssymb,amsmath}
 %\usepackage[margin=1in]{geometry}
-\usepackage[letterpaper,bottom=1in,top=1in,right=1in,left=1in,includemp=FALSE]{geometry}
+%% Adding footskip to make sure footer does not fall off the bottom of the page
+\usepackage[letterpaper,bottom=1in,top=1in,right=1in,left=1in,footskip=.25in,includemp=FALSE]{geometry}
 \usepackage{pdfpages}
 \usepackage[small]{caption}
 
@@ -166,12 +169,17 @@ $endfor$
 
 \usepackage[export]{adjustbox}
 
+%% The OES/GSA icons were getting stacked on top of each other. This seems to 
+%% put them side by side with some space. Also increasing size of logos.
+
 \usepackage{fancyhdr}
 \fancyhead{}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 \rfoot{\footnotesize{\color{darkgrey}{\thepage}}}
-\rhead{\includegraphics[width=.8cm,valign=c]{OES.png} \includegraphics[width=.8cm,valign=c]{GSA.png}}
+\rhead{\includegraphics[width=.65in,valign=c]{OES.png} 
+    \hspace{.005in}
+    \includegraphics[width=.65in,valign=c]{GSA.png}}
 %\cfoot{\color{grey}{ \footnotesize{\number\year | \href{http://oes.gsa.gov}{http://oes.gsa.gov} } }}
 \cfoot{\color{darkgrey}{ \footnotesize{ \href{http://oes.gsa.gov}{http://oes.gsa.gov} } }}
 \pagestyle{fancy}
@@ -264,6 +272,10 @@ $endfor$
 \setlength{\floatsep}{2ex}
 \setlength{\textfloatsep}{2ex}
 
+%% The footer was getting pushed off the bottom of the page after
+%% the first page. This seems to help.
+\headheight .65in
+\headsep .15in
 
 \begin{document}
 \VerbatimFootnotes
