@@ -30,7 +30,7 @@ source("setup.R")
 
 # How this document is to be used: 
 
-*This document is associated with the “Reanalysis” gate and is intended
+*This document is associated with the "Reanalysis" gate and is intended
 to be the record of the reanalysis of project data. When the reanalyst
 has completed this document and is ready for a discussion with the
 project Lead to discuss final results, they will schedule a conversation
@@ -40,7 +40,7 @@ to reconcile the two analyses.*
 
 ## Background:
 
-*The reanalyst’s understanding of the study design, objectives, and planned analysis are as follows:*
+*The reanalyst's understanding of the study design, objectives, and planned analysis are as follows:*
 
 ## Methods:
 
