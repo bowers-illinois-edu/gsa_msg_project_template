@@ -178,9 +178,9 @@ $endfor$
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 \rfoot{\footnotesize{\color{darkgrey}{\thepage}}}
-\rhead{\includegraphics[width=.65in,valign=c]{OES.png} 
+\rhead{\includegraphics[width=.65in,valign=c]{OES-Square-resize.png} 
     \hspace{.005in}
-    \includegraphics[width=.65in,valign=c]{GSA.png}}
+    \includegraphics[width=.65in,valign=c]{GSA-logo-resize.png}}
 %\cfoot{\color{grey}{ \footnotesize{\number\year | \href{http://oes.gsa.gov}{http://oes.gsa.gov} } }}
 \cfoot{\color{darkgrey}{ \footnotesize{ \href{http://oes.gsa.gov}{http://oes.gsa.gov} } }}
 \pagestyle{fancy}
