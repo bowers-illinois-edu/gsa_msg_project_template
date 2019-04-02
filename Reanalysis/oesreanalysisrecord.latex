@@ -112,6 +112,7 @@ $endif$
 \usepackage[pagebackref=true, unicode=true, bookmarks=true, pdftex]{hyperref}
 \fi
 
+\urlstyle{same}
 \hypersetup{breaklinks=true,
   bookmarks=true,
   pdfauthor={$author-meta$},
