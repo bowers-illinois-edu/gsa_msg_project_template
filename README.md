@@ -3,7 +3,7 @@
 This is the bare bones template for our projects.
 
 To use it
- 1. Make a new empty project repository with appropriate name on GitHub.  Use the form `NNNN-ABC-MyProjectDescription` (where `NNNN` is the four-digit project code, `ABC` is the agency abbreviation, and `MyProjectDescription` is a very short project description in camel-case).
+ 1. Make a new empty project repository with appropriate name on GitHub.  Use the form `NNNN-ABC-MyProjectDescription` (where `NNNN` is the four-digit project code, `ABC` is the agency abbreviation, and `MyProjectDescription` is a very short project description in Pascal case).
  2. Clone the new project repo to your local machine
  3. Clone **this** template repository to your local machine
  4. Copy everything from this template repository (except the `.git` directory) to the directory containing the new blank project repository. For example, you can use the following command at the unix/Mac/bash/zsh shell command line `rsync -auvzr --exclude='.git/' * ../mynewproject` if you are already in the `ProjectTemplate` directory.
