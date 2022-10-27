@@ -1,6 +1,6 @@
 # Project Template
 
-This is the bare bones template for our projects.
+This is the bare bones template for our projects. This is a work in progress. Comments welcome.
 
 To use it
  1. Make a new empty project repository with appropriate name on GitHub.  Use the form `NNNN-ABC-MyProjectDescription` (where `NNNN` is the four-digit project code, `ABC` is the agency abbreviation, and `MyProjectDescription` is a very short project description in Pascal case).
